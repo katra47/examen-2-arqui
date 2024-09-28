@@ -104,7 +104,7 @@
         // Función para obtener los datos de la API
         async function obtenerDatos() {
             try {
-                const response = await fetch('http://127.0.0.1:5000/api/datos');
+                const response = await fetch('http://tu-dominio-publico/api/datos');  // Cambia esta URL
                 if (!response.ok) {
                     throw new Error('Error al obtener los datos');
                 }
@@ -118,9 +118,7 @@
         // Función para mostrar los datos en la tabla
         function mostrarDatos(datos) {
             const tbody = document.querySelector('#datos-table tbody');
-            
-            // Invertir el orden de los datos
-            datos.reverse();
+            datos.reverse(); // Invertir el orden de los datos
             
             datos.forEach(dato => {
                 const tr = document.createElement('tr');

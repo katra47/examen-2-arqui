@@ -13,7 +13,7 @@ def index():
 def conectar_base_datos():
     try:
         conexion = psycopg2.connect(
-            host="localhost",
+            host="localhost",  # Cambia esto a la IP de tu servidor si es necesario
             user="postgres",  # Reemplaza con tu usuario
             password="789654lol",  # Reemplaza con tu contraseña
             database="prueba"  # Asegúrate de que la base de datos sea correcta
