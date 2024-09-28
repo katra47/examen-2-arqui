@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Datos</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #4a90e2;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 90%;
+            max-width: 800px;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4a90e2;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f1f7ff;
+        }
+
+        @media (max-width: 600px) {
+            table, th, td {
+                display: block;
+                width: 100%;
+            }
+
+            th, td {
+                text-align: right;
+                padding: 10px;
+                position: relative;
+            }
+
+            th {
+                text-align: right;
+                background-color: #4a90e2;
+                padding-top: 10px;
+            }
+
+            td {
+                border-bottom: 1px solid #ddd;
+                padding-left: 50%;
+                text-align: right;
+            }
+
+            td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Datos de Distancia</h1>
+    <table id="datos-table">
+        <thead>
+            <tr>
+                <th>Distancia (cm)</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Los datos se insertarán aquí -->
+        </tbody>
+    </table>
+
+    <script>
+        // Función para obtener los datos de la API
+        async function obtenerDatos() {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/datos');
+                if (!response.ok) {
+                    throw new Error('Error al obtener los datos');
+                }
+                const datos = await response.json();
+                mostrarDatos(datos);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        // Función para mostrar los datos en la tabla
+        function mostrarDatos(datos) {
+            const tbody = document.querySelector('#datos-table tbody');
+            
+            // Invertir el orden de los datos
+            datos.reverse();
+            
+            datos.forEach(dato => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td data-label="Distancia">${dato.distancia} cm</td>
+                    <td data-label="Fecha">${dato.fecha}</td>
+                    <td data-label="Hora">${dato.hora}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Llamar a la función para obtener los datos al cargar la página
+        window.onload = obtenerDatos;
+    </script>
+</body>
+</html>
